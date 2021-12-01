@@ -209,47 +209,69 @@ public class DatosDesordenados {
    
    /*-------------------------Fin-------------------------*/
    
-   
-   
-   
-   
-   
-   
-   
-   
-    public static void quicksort(int A[], int izq, int der) {
+       
+   //Se agregó quicksort y su metodo Ascendente
+   /*-------------------------Inicio-------------------------*/
+    static int cq = 0;
+    static int pq = 0;
+    static int pm = 0;
+    
+       public DatosOrdenados quickSortAscendente() {
+        //arreglo a ordenar
+        int[] o = this.getCopiaValores();
 
-        int pivote = A[izq]; 
-        int i = izq;         
-        int j = der;         
-        int aux;
+        //llamada al metodo de ordenamiento QuickSort
+        //quickSort(o,0,o.length-1);
+        this.quicksortAs(o, 0, o.length - 1);
+        System.out.println("QS-comparaciones = " + cq);
+        System.out.println("QS-permutaciones = " + pm);
 
-        while (i < j) {                                                             
-            while (A[i] <= pivote && i < j) {
-                i++; // 
-            }
-            while (A[j] > pivote) {
-                j--;           
-            }
-            if (i < j) {                                              
-                aux = A[i];                      
-                A[i] = A[j];
-                A[j] = aux;
-            }
-        }
+        //metodo para imprimir el vctor ordenado
+        return new DatosOrdenados(o);
+    }
 
-        A[izq] = A[j];                                       
-        A[j] = pivote;      
-
-        if (izq < j - 1) {
-            quicksort(A, izq, j - 1);          
-        }
-        if (j + 1 < der) {
-            quicksort(A, j + 1, der);          
+    private void quicksortAs(int v[], int l, int r) {
+        int m = (r + l) / 2;
+        if (r > l) {
+            cq++;
+            quicksortAs(v, l, m);
+            quicksortAs(v, m + 1, r);
+            quickAs(v, l, m, r);
         }
     }
-   
-    
+
+    //static int cq = 0;
+    //static int pq = 0;
+    private void quickAs(int v[], int l, int m, int r) { //A IZQ DER
+        int piv = v[l];                 //tomamos el primer elemento como pivote
+        int i = l;                      //i realiza la búsqueda de izquierda a derecha
+        int j = r;                      //j realiza la búsqueda de derecha a izquierda
+        int aux;
+
+        while (i < j) {                     // mientras no se crucen...
+            while (v[i] <= piv && i < j) {    // busca un elemento mayor que pivote,
+                i++;
+            }
+            while (v[j] > piv) {            //busca un elemento menor que pivote,
+                j--;
+            }
+            if (i < j) {                   //si los encuentra y no se han cruzado...
+                pm++;
+                aux = v[i];              //los intercambia.
+                v[i] = v[j];
+                v[j] = aux;
+            }
+        }
+        v[l] = v[j];                    //colocamos el pivote en su lugar de la forma [menores][pivote][mayores]
+        v[j] = piv;
+        if (l < j - 1) {                    // ordenamos mitad izquierda
+            quickAs(v, l, m, j - 1);
+        }
+        if (j + 1 < r) {
+            quickAs(v, j + 1, m, r);   // ordenamos mitad derecha
+        }
+    }
+    /*-------------------------Fin-------------------------*/
     
     
     
