@@ -1,5 +1,5 @@
 package datos;
-
+import java.util.Arrays;
 /**
  *
  * @author Noemí Lara Acono
@@ -182,6 +182,102 @@ public class DatosDesordenados {
 	  }
 	}
     
+    public static void quicksort(int A[], int izq, int der) {
+
+        int pivote = A[izq]; // tomamos primer elemento como pivote
+        int i = izq;         // i realiza la búsqueda de izquierda a derecha
+        int j = der;         // j realiza la búsqueda de derecha a izquierda
+        int aux;
+
+        while (i < j) {                          // mientras no se crucen las búsquedas                                   
+            while (A[i] <= pivote && i < j) {
+                i++; // busca elemento mayor que pivote
+            }
+            while (A[j] > pivote) {
+                j--;           // busca elemento menor que pivote
+            }
+            if (i < j) {                        // si no se han cruzado                      
+                aux = A[i];                      // los intercambia
+                A[i] = A[j];
+                A[j] = aux;
+            }
+        }
+
+        A[izq] = A[j];      // se coloca el pivote en su lugar de forma que tendremos                                    
+        A[j] = pivote;      // los menores a su izquierda y los mayores a su derecha
+
+        if (izq < j - 1) {
+            quicksort(A, izq, j - 1);          // ordenamos subarray izquierdo
+        }
+        if (j + 1 < der) {
+            quicksort(A, j + 1, der);          // ordenamos subarray derecho
+        }
+    }
+   
+    public static void shell(int A[]) {
+
+        int salto, aux, i;
+        boolean cambios;
+  
+        for (salto = A.length / 2; salto != 0; salto /= 2) {
+            cambios = true;
+            while (cambios) {   // Mientras se intercambie algún elemento                                         
+                cambios = false;
+                for (i = salto; i < A.length; i++)   // se da una pasada
+                {
+                    if (A[i - salto] > A[i]) {       // y si están desordenados
+                        aux = A[i];                  // se reordenan
+                        A[i] = A[i - salto];
+                        A[i - salto] = aux;
+                        cambios = true;              // y se marca como cambio.                                   
+                    }
+                }
+            }
+        }
+}
+    
+
+
+/*
+	public static void main(String[] args) {
+		int arr[] = {53,3,542,748,14,214};
+		radixSort(arr);
+		System.out.println(Arrays.toString(arr));
+	}
+        */
+	public static void radixSort(int[] arr) {
+		int[][] bucket = new int[10][arr.length];
+		int[] bucketOfElement = new int[10];
+		int max=0;
+		// Encuentra el elemento más grande en la matriz
+		for(int i = 0 ; i < arr.length;i++) {
+			if(arr[i]>max){
+				max = arr[i];
+			}
+		}
+		// Calcula el número de bits del elemento más grande
+		int maxLength = (max+"").length();
+		for(int m = 0,n=1;m<maxLength;m++,n*=10) {
+			// Coloca los números en arr en los cubos correspondientes según sus unidades, decenas, centenas, etc.
+			for(int i = 0 ; i < arr.length;i++) {
+				int digit = arr[i]/n%10;
+				// Asignar el valor de arr [i] a la matriz bidimensional en el depósito
+				bucket[digit][bucketOfElement[digit]] = arr[i];
+				bucketOfElement[digit]++;
+			}
+			int index = 0;
+			// Leer los elementos en el depósito y reasignarlos a arr
+			for(int j = 0;j<10;j++) {
+				for(int k = 0 ; k<bucketOfElement[j];k++) {
+					arr[index] = bucket[j][k];
+					index++;
+				}
+				bucketOfElement[j]=0;// Borrar el número de elementos en cada uno
+			}
+	}
+		
+}
+   
     @Override
     public String toString(){
         String cad = "Datos DESORDENADOS: ";
