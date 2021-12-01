@@ -215,13 +215,9 @@ public class DatosDesordenados {
     static int cq = 0;
     static int pq = 0;
     static int pm = 0;
-    
-       public DatosOrdenados quickSortAscendente() {
-        //arreglo a ordenar
-        int[] o = this.getCopiaValores();
 
-        //llamada al metodo de ordenamiento QuickSort
-        //quickSort(o,0,o.length-1);
+    public DatosOrdenados quickSortAscendente() {
+        int[] o = this.getCopiaValores();
         this.quicksortAs(o, 0, o.length - 1);
         System.out.println("QS-comparaciones = " + cq);
         System.out.println("QS-permutaciones = " + pm);
@@ -242,33 +238,33 @@ public class DatosDesordenados {
 
     //static int cq = 0;
     //static int pq = 0;
-    private void quickAs(int v[], int l, int m, int r) { //A IZQ DER
-        int piv = v[l];                 //tomamos el primer elemento como pivote
-        int i = l;                      //i realiza la búsqueda de izquierda a derecha
-        int j = r;                      //j realiza la búsqueda de derecha a izquierda
+    private void quickAs(int v[], int l, int m, int r) {
+        int piv = v[l];
+        int i = l;
+        int j = r;
         int aux;
 
-        while (i < j) {                     // mientras no se crucen...
-            while (v[i] <= piv && i < j) {    // busca un elemento mayor que pivote,
+        while (i < j) {
+            while (v[i] <= piv && i < j) {
                 i++;
             }
-            while (v[j] > piv) {            //busca un elemento menor que pivote,
+            while (v[j] > piv) {
                 j--;
             }
-            if (i < j) {                   //si los encuentra y no se han cruzado...
+            if (i < j) {
                 pm++;
-                aux = v[i];              //los intercambia.
+                aux = v[i];
                 v[i] = v[j];
                 v[j] = aux;
             }
         }
-        v[l] = v[j];                    //colocamos el pivote en su lugar de la forma [menores][pivote][mayores]
+        v[l] = v[j];
         v[j] = piv;
-        if (l < j - 1) {                    // ordenamos mitad izquierda
+        if (l < j - 1) {
             quickAs(v, l, m, j - 1);
         }
         if (j + 1 < r) {
-            quickAs(v, j + 1, m, r);   // ordenamos mitad derecha
+            quickAs(v, j + 1, m, r);
         }
     }
     /*-------------------------Fin-------------------------*/
@@ -276,70 +272,71 @@ public class DatosDesordenados {
     
     
     
+    /*-------------------------Inicio-------------------------*/
     
-    public static void shell(int A[]) {
-
+ public DatosOrdenados shell() {
+        int [] s = this.getCopiaValores();
         int salto, aux, i;
         boolean cambios;
   
-        for (salto = A.length / 2; salto != 0; salto /= 2) {
+        for (salto = s.length / 2; salto != 0; salto /= 2) {
             cambios = true;
             while (cambios) {   // Mientras se intercambie algún elemento                                         
                 cambios = false;
-                for (i = salto; i < A.length; i++)   // se da una pasada
+                for (i = salto; i < s.length; i++)   // se da una pasada
                 {
-                    if (A[i - salto] > A[i]) {       // y si están desordenados
-                        aux = A[i];                  // se reordenan
-                        A[i] = A[i - salto];
-                        A[i - salto] = aux;
+                    if (s[i - salto] > s[i]) {       // y si están desordenados
+                        aux = s[i];                  // se reordenan
+                        s[i] = s[i - salto];
+                        s[i - salto] = aux;
                         cambios = true;              // y se marca como cambio.                                   
                     }
                 }
-            }
+            
         }
 }
-    
-
-
-/*
-	public static void main(String[] args) {
-		int arr[] = {53,3,542,748,14,214};
-		radixSort(arr);
-		System.out.println(Arrays.toString(arr));
-	}
-        */
-	public static void radixSort(int[] arr) {
-		int[][] bucket = new int[10][arr.length];
-		int[] bucketOfElement = new int[10];
-		int max=0;
-		// Encuentra el elemento más grande en la matriz
-		for(int i = 0 ; i < arr.length;i++) {
-			if(arr[i]>max){
-				max = arr[i];
-			}
-		}
-		// Calcula el número de bits del elemento más grande
-		int maxLength = (max+"").length();
-		for(int m = 0,n=1;m<maxLength;m++,n*=10) {
-			// Coloca los números en arr en los cubos correspondientes según sus unidades, decenas, centenas, etc.
-			for(int i = 0 ; i < arr.length;i++) {
-				int digit = arr[i]/n%10;
-				// Asignar el valor de arr [i] a la matriz bidimensional en el depósito
-				bucket[digit][bucketOfElement[digit]] = arr[i];
-				bucketOfElement[digit]++;
-			}
-			int index = 0;
-			// Leer los elementos en el depósito y reasignarlos a arr
-			for(int j = 0;j<10;j++) {
-				for(int k = 0 ; k<bucketOfElement[j];k++) {
-					arr[index] = bucket[j][k];
-					index++;
-				}
-				bucketOfElement[j]=0;// Borrar el número de elementos en cada uno
-			}
-	}
-		
+        return new DatosOrdenados(s);
 }
+
+         
+    
+    
+/*-------------------------Fin-------------------------*/    
+
+public DatosOrdenados radix (){
+        int[] arreglor = this.getCopiaValores();
+        int n = arreglor.length;
+        int cont = 0;
+        
+        int x,i,j;
+        for (x = Integer.SIZE-1; x >= 0; x--){
+            int auxiliar [] = new int [arreglor.length];
+            j = 0;
+            for (i = 0; i < arreglor.length; i++){
+                boolean mover = arreglor[i] <<x>=0;
+                if (x==0 ? !mover:mover){
+                    auxiliar[j] = arreglor[i];
+                    j++;
+                   cont++; 
+                }else {
+                    arreglor[i-j] = arreglor[i];
+                    pq++;
+                    
+                }
+               
+            }
+            
+            for (i=j; i<auxiliar.length;i++){
+                auxiliar[i]= arreglor[i-j];
+                
+            }
+            arreglor = auxiliar;
+            
+        }
+        System.out.println("R-comparaciones = " +cont);
+        System.out.println("R-permutaciones = " +pq );
+        return new DatosOrdenados(arreglor);
+    } 
    
     @Override
     public String toString(){
@@ -349,6 +346,10 @@ public class DatosDesordenados {
         }
         return cad;
     }
+
+
+
+
     
     
     
